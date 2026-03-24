@@ -323,7 +323,7 @@ body::before {
 
 /* ─── Page Header ───────────────────────────────────────────────────────── */
 .page-header {
-  padding: calc(62px + 3.5rem) 2.5rem 3rem;
+  padding: calc(62px + 3.5rem) clamp(1.25rem, 5vw, 2.5rem) 3rem;
   background: var(--surface);
   border-bottom: 1px solid var(--border-hi);
   position: relative;

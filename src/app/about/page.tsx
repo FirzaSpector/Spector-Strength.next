@@ -11,12 +11,12 @@ export default function AboutPage() {
       <div className="page-header">
         <div style={{ maxWidth: 1100, margin: '0 auto' }}>
           <div className="section-label">Info</div>
-          <h1 style={{ fontFamily: 'var(--font-display)', fontWeight: 900, fontSize: 'clamp(44px,8vw,80px)', letterSpacing: '-0.01em', lineHeight: 0.92 }}>ABOUT</h1>
+          <h1 style={{ fontFamily: 'var(--font-display)', fontWeight: 900, fontSize: 'clamp(32px,8vw,80px)', letterSpacing: '-0.01em', lineHeight: 0.92 }}>ABOUT</h1>
           <p style={{ color: 'var(--text-2)', maxWidth: 540, fontSize: 17, marginTop: '1rem' }}>Formula references, methodology, and project details.</p>
         </div>
       </div>
 
-      <div style={{ maxWidth: 800, margin: '0 auto', padding: '3rem 2rem 5rem' }}>
+      <div style={{ maxWidth: 800, margin: '0 auto', padding: '2rem clamp(1.25rem, 5vw, 2rem) 5rem' }}>
         {/* Disclaimer */}
         <div className="card-glow" style={{ marginBottom: '2rem' }}>
           <div className="card-inner">

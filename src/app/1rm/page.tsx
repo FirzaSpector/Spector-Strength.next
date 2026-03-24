@@ -29,12 +29,12 @@ export default function OneRMPage() {
       <div className="page-header">
         <div style={{ maxWidth: 1100, margin: '0 auto' }}>
           <div className="section-label">Calculator</div>
-          <h1 style={{ fontFamily: 'var(--font-display)', fontWeight: 900, fontSize: 'clamp(44px,8vw,80px)', letterSpacing: '-0.01em', lineHeight: 0.92 }}>1RM CALCULATOR</h1>
+          <h1 style={{ fontFamily: 'var(--font-display)', fontWeight: 900, fontSize: 'clamp(32px,8vw,80px)', letterSpacing: '-0.01em', lineHeight: 0.92 }}>1RM CALCULATOR</h1>
           <p style={{ color: 'var(--text-2)', maxWidth: 540, fontSize: 17, marginTop: '1rem' }}>Five proven formulas to estimate your one-rep max from any rep count.</p>
         </div>
       </div>
 
-      <div style={{ maxWidth: 1100, margin: '0 auto', padding: '3rem 2rem 5rem', display: 'grid', gridTemplateColumns: 'minmax(280px,380px) 1fr', gap: '1.5rem', alignItems: 'start' }}>
+      <div style={{ maxWidth: 1100, margin: '0 auto', padding: '2rem clamp(1rem, 5vw, 2rem) 5rem', display: 'grid', gridTemplateColumns: 'minmax(280px,380px) 1fr', gap: '1.5rem', alignItems: 'start' }}>
         {/* Inputs */}
         <div className="card-glow">
           <div className="card-inner">

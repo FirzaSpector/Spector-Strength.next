@@ -83,7 +83,7 @@ export default function Home() {
           </motion.div>
           <motion.h1
             initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1], delay: 0.1 }}
-            style={{ fontFamily: 'var(--font-display)', fontWeight: 900, fontSize: 'clamp(48px, 15vw, 188px)', letterSpacing: '-0.01em', lineHeight: 0.86, marginBottom: '2rem' }}
+            style={{ fontFamily: 'var(--font-display)', fontWeight: 900, fontSize: 'clamp(36px, 15vw, 188px)', letterSpacing: '-0.01em', lineHeight: 0.86, marginBottom: '2rem' }}
           >
             SPECTOR<br /><span style={{ color: 'var(--red)' }}>STRENGTH</span>
           </motion.h1>
@@ -108,7 +108,7 @@ export default function Home() {
       </section>
 
       {/* Stats bar */}
-      <section style={{ background: 'var(--surface)', borderTop: '1px solid var(--border)', borderBottom: '1px solid var(--border)', padding: '2.75rem 2.5rem' }}>
+      <section style={{ background: 'var(--surface)', borderTop: '1px solid var(--border)', borderBottom: '1px solid var(--border)', padding: '2.75rem clamp(1.25rem, 5vw, 2.5rem)' }}>
         <div style={{ maxWidth: 1100, margin: '0 auto' }}>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(130px, 1fr))', gap: '1.5rem', textAlign: 'center' }}>
             {stats.map((s, i) => (
@@ -122,7 +122,7 @@ export default function Home() {
       </section>
 
       {/* Tools grid */}
-      <section style={{ padding: '5rem 2.5rem' }}>
+      <section style={{ padding: '5rem clamp(1.25rem, 5vw, 2.5rem)' }}>
         <div style={{ maxWidth: 1100, margin: '0 auto' }}>
           <motion.div initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} style={{ marginBottom: '3rem' }}>
             <div className="section-label">Your</div>
@@ -158,7 +158,7 @@ export default function Home() {
       </section>
 
       {/* CTA banner */}
-      <section style={{ padding: '8rem 2.5rem', background: '#000', borderTop: '1px solid var(--border)', position: 'relative', overflow: 'hidden' }}>
+      <section style={{ padding: '8rem clamp(1.25rem, 5vw, 2.5rem)', background: '#000', borderTop: '1px solid var(--border)', position: 'relative', overflow: 'hidden' }}>
         {/* Background Image with Overlay */}
         <div style={{ position: 'absolute', inset: 0, backgroundImage: 'url("/competition-gemini.png")', backgroundSize: 'cover', backgroundPosition: 'center', opacity: 0.35 }} />
         <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, transparent, #000 90%)', opacity: 0.8 }} />

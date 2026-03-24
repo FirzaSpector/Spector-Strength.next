@@ -335,12 +335,12 @@ export default function ProgramsPage() {
       <div className="page-header">
         <div style={{ maxWidth: 1100, margin: '0 auto' }}>
           <div className="section-label">Training</div>
-          <h1 style={{ fontFamily: 'var(--font-display)', fontWeight: 900, fontSize: 'clamp(44px,8vw,80px)', letterSpacing: '-0.01em', lineHeight: 0.92 }}>PROGRAMS</h1>
+          <h1 style={{ fontFamily: 'var(--font-display)', fontWeight: 900, fontSize: 'clamp(32px,8vw,80px)', letterSpacing: '-0.01em', lineHeight: 0.92 }}>PROGRAMS</h1>
           <p style={{ color: 'var(--text-2)', maxWidth: 560, fontSize: 17, marginTop: '1rem' }}>Accessory work for the big three. Seven exercises per lift — with sets, reps, intensity targets, and coaching cues.</p>
         </div>
       </div>
 
-      <div style={{ maxWidth: 1100, margin: '0 auto', padding: '3rem 2rem 5rem' }}>
+      <div style={{ maxWidth: 1100, margin: '0 auto', padding: '2rem clamp(1.25rem, 5vw, 2rem) 5rem' }}>
         {sections.map(section => (
           <section key={section.id} style={{ marginBottom: '4rem' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', marginBottom: '2rem' }}>

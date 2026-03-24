@@ -34,7 +34,7 @@ export default function NavBar() {
         style={{
           position: 'fixed', top: 0, left: 0, right: 0, height: 62,
           zIndex: 1000,
-          display: 'flex', alignItems: 'center', padding: '0 2.5rem', gap: '1.5rem',
+          display: 'flex', alignItems: 'center', padding: '0 clamp(1.25rem, 5vw, 2.5rem)', gap: '1.5rem',
           background: scrolled ? 'rgba(5,5,5,0.92)' : 'rgba(5,5,5,0.45)',
           backdropFilter: 'blur(24px) saturate(1.6)',
           WebkitBackdropFilter: 'blur(24px) saturate(1.6)',
@@ -45,7 +45,7 @@ export default function NavBar() {
         <Link
           href="/"
           style={{
-            fontFamily: 'var(--font-display)', fontWeight: 900, fontSize: 21,
+            fontFamily: 'var(--font-display)', fontWeight: 900, fontSize: 'clamp(18px, 5vw, 21px)',
             letterSpacing: '0.05em', color: 'var(--text)', textDecoration: 'none',
             display: 'flex', alignItems: 'center', whiteSpace: 'nowrap', flexShrink: 0,
           }}
@@ -111,7 +111,7 @@ export default function NavBar() {
           background: 'rgba(5,5,5,0.97)',
           backdropFilter: 'blur(24px)',
           borderBottom: '1px solid var(--border-hi)',
-          padding: mobileOpen ? '0.75rem 1.5rem 1.25rem' : '0 1.5rem',
+          padding: mobileOpen ? '0.75rem clamp(1.25rem, 5vw, 2.5rem) 1.25rem' : '0 clamp(1.25rem, 5vw, 2.5rem)',
           maxHeight: mobileOpen ? 480 : 0,
           overflow: 'hidden',
           transition: 'max-height 0.4s cubic-bezier(0.22,1,0.36,1), padding 0.4s cubic-bezier(0.22,1,0.36,1)',
