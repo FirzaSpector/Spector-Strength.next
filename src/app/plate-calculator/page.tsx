@@ -145,7 +145,7 @@ export default function PlateCalculatorPage() {
               </div>
               <div style={{ padding: '1rem', minHeight: 180, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 {result ? (
-                  <PlateVisual plates={result.plates} unit={unit} />
+                  <PlateVisual plates={result.plates} unit={unit} barWeight={parseFloat(barWeight)} totalWeight={result.loaded} />
                 ) : (
                   <div style={{ color: 'var(--text-3)', fontFamily: 'var(--font-mono)', fontSize: 13 }}>Enter a target weight to load the bar</div>
                 )}
