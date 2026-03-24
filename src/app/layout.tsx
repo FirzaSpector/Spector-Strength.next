@@ -37,7 +37,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               SPECTOR<span style={{ color: 'var(--red)', fontWeight: 300 }}>/</span>STRENGTH
             </span>
           </span>
-          <span>All calculations are estimates. © 2025 Spector Strength.</span>
+          <span>All calculations are estimates. © 2026 Spector Strength.</span>
         </footer>
       </body>
     </html>
