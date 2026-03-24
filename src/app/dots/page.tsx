@@ -6,9 +6,7 @@ import { calculateDOTS, getDotsTier, dotsTierProgression, formatNum } from '@/li
 
 export default function DotsPage() {
   const [bw, setBw] = useState('');
-  const [squat, setSquat] = useState('');
-  const [bench, setBench] = useState('');
-  const [deadlift, setDeadlift] = useState('');
+  const [totalLift, setTotalLift] = useState('');
   const [gender, setGender] = useState<'male' | 'female'>('male');
   const [unit, setUnit] = useState<'kg' | 'lbs'>('kg');
   const [result, setResult] = useState<number | null>(null);
@@ -17,11 +15,11 @@ export default function DotsPage() {
 
   const calculate = useCallback(() => {
     const bwKg = parseFloat(bw) / (unit === 'lbs' ? KG_TO_LBS : 1);
-    const total = (parseFloat(squat) || 0) + (parseFloat(bench) || 0) + (parseFloat(deadlift) || 0);
+    const total = parseFloat(totalLift) || 0;
     const totalKg = total / (unit === 'lbs' ? KG_TO_LBS : 1);
     if (!bwKg || !totalKg) return;
     setResult(calculateDOTS(bwKg, totalKg, gender));
-  }, [bw, squat, bench, deadlift, gender, unit]);
+  }, [bw, totalLift, gender, unit]);
 
   const tier = result ? getDotsTier(result) : null;
   const progression = bw ? dotsTierProgression(parseFloat(bw) / (unit === 'lbs' ? KG_TO_LBS : 1), gender) : null;
@@ -61,9 +59,7 @@ export default function DotsPage() {
 
             {[
               { label: 'Bodyweight', val: bw, set: setBw, placeholder: '83' },
-              { label: 'Squat', val: squat, set: setSquat, placeholder: '200' },
-              { label: 'Bench', val: bench, set: setBench, placeholder: '140' },
-              { label: 'Deadlift', val: deadlift, set: setDeadlift, placeholder: '240' },
+              { label: 'Total', val: totalLift, set: setTotalLift, placeholder: '580' },
             ].map(({ label, val, set, placeholder }) => (
               <div key={label} style={{ display: 'flex', flexDirection: 'column', gap: 7, marginBottom: '1.25rem' }}>
                 <label style={{ fontFamily: 'var(--font-body)', fontWeight: 600, fontSize: 11, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--text-3)' }}>{label}</label>
