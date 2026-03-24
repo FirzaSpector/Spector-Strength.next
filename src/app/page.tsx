@@ -83,7 +83,7 @@ export default function Home() {
           </motion.div>
           <motion.h1
             initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1], delay: 0.1 }}
-            style={{ fontFamily: 'var(--font-display)', fontWeight: 900, fontSize: 'clamp(84px, 19vw, 188px)', letterSpacing: '-0.01em', lineHeight: 0.86, marginBottom: '2rem' }}
+            style={{ fontFamily: 'var(--font-display)', fontWeight: 900, fontSize: 'clamp(48px, 15vw, 188px)', letterSpacing: '-0.01em', lineHeight: 0.86, marginBottom: '2rem' }}
           >
             SPECTOR<br /><span style={{ color: 'var(--red)' }}>STRENGTH</span>
           </motion.h1>
@@ -110,10 +110,10 @@ export default function Home() {
       {/* Stats bar */}
       <section style={{ background: 'var(--surface)', borderTop: '1px solid var(--border)', borderBottom: '1px solid var(--border)', padding: '2.75rem 2.5rem' }}>
         <div style={{ maxWidth: 1100, margin: '0 auto' }}>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: '1.5rem', textAlign: 'center' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(130px, 1fr))', gap: '1.5rem', textAlign: 'center' }}>
             {stats.map((s, i) => (
               <motion.div key={s.label} initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.08, duration: 0.5 }}>
-                <div style={{ fontFamily: 'var(--font-display)', fontWeight: 900, fontSize: 'clamp(44px,6vw,72px)', color: s.color, lineHeight: 1 }}>{s.value}</div>
+                <div style={{ fontFamily: 'var(--font-display)', fontWeight: 900, fontSize: 'clamp(32px, 8vw, 72px)', color: s.color, lineHeight: 1 }}>{s.value}</div>
                 <div style={{ fontFamily: 'var(--font-mono)', fontSize: 10, letterSpacing: '0.22em', textTransform: 'uppercase', color: 'var(--text-3)', marginTop: 6 }}>{s.label}</div>
               </motion.div>
             ))}
@@ -126,11 +126,11 @@ export default function Home() {
         <div style={{ maxWidth: 1100, margin: '0 auto' }}>
           <motion.div initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} style={{ marginBottom: '3rem' }}>
             <div className="section-label">Your</div>
-            <h2 style={{ fontFamily: 'var(--font-display)', fontWeight: 900, fontSize: 'clamp(44px,8vw,80px)', letterSpacing: '-0.01em', lineHeight: 0.92 }}>TOOLS</h2>
+            <h2 style={{ fontFamily: 'var(--font-display)', fontWeight: 900, fontSize: 'clamp(36px, 8vw, 80px)', letterSpacing: '-0.01em', lineHeight: 0.92 }}>TOOLS</h2>
             <p style={{ color: 'var(--text-2)', maxWidth: 500, marginTop: '1rem', fontSize: 17 }}>Every calculation you need from the platform to the podium — built for accuracy, designed for speed.</p>
           </motion.div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill,minmax(320px,1fr))', gap: '1.25rem' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill,minmax(280px,1fr))', gap: '1.25rem' }}>
             {tools.map(({ href, icon: Icon, label, desc, cta, accent }, i) => (
               <motion.div key={href} initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.07, duration: 0.55 }}>
                 <Link href={href} style={{ textDecoration: 'none', display: 'block' }}>
@@ -164,7 +164,7 @@ export default function Home() {
         <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, transparent, #000 90%)', opacity: 0.8 }} />
 
         <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} style={{ maxWidth: 800, margin: '0 auto', textAlign: 'center', position: 'relative', zIndex: 1 }}>
-          <h2 style={{ fontFamily: 'var(--font-display)', fontWeight: 900, fontSize: 'clamp(56px,12vw,120px)', letterSpacing: '-0.02em', lineHeight: 0.85, marginBottom: '1.5rem' }}>
+          <h2 style={{ fontFamily: 'var(--font-display)', fontWeight: 900, fontSize: 'clamp(42px, 10vw, 120px)', letterSpacing: '-0.02em', lineHeight: 0.85, marginBottom: '1.5rem' }}>
             BUILT FOR<br /><span style={{ color: 'var(--red)', textShadow: '0 0 40px rgba(229,57,53,0.3)' }}>COMPETITION</span>
           </h2>
           <p style={{ color: 'var(--text-2)', fontSize: 19, margin: '0 auto 3rem', letterSpacing: '0.04em', maxWidth: 640 }}>
