@@ -177,17 +177,17 @@ export const KG_PLATES: PlateDefinition[] = [
   { weight: 25, color: '#e90b0b', label: '25', textColor: '#fff' },
   { weight: 20, color: '#030ced', label: '20', textColor: '#fff' },
   { weight: 15, color: '#fff32d', label: '15', textColor: '#fff' },
-  { weight: 10, color: '#16a34a', label: '10', textColor: '#fff' },
+  { weight: 10, color: '#44ac1c', label: '10', textColor: '#fff' },
   { weight: 5, color: '#f5f5f5', label: '5', textColor: '#000' },
   { weight: 2.5, color: '#374151', label: '2.5', textColor: '#fff' },
   { weight: 1.25, color: '#c0c0c0', label: '1.25', textColor: '#000' },
 ];
 
 export const LBS_PLATES: PlateDefinition[] = [
-  { weight: 45, color: '#dc2626', label: '45', textColor: '#fff' },
-  { weight: 35, color: '#7c3aed', label: '35', textColor: '#fff' },
-  { weight: 25, color: '#1d4ed8', label: '25', textColor: '#fff' },
-  { weight: 10, color: '#16a34a', label: '10', textColor: '#fff' },
+  { weight: 45, color: '#e90b0b', label: '45', textColor: '#fff' },
+  { weight: 35, color: '#030ced', label: '35', textColor: '#fff' },
+  { weight: 25, color: '#fff32d', label: '25', textColor: '#fff' },
+  { weight: 10, color: '#44ac1c', label: '10', textColor: '#fff' },
   { weight: 5, color: '#f5f5f5', label: '5', textColor: '#000' },
   { weight: 2.5, color: '#374151', label: '2.5', textColor: '#fff' },
   { weight: 1.25, color: '#c0c0c0', label: '1.25', textColor: '#000' },
