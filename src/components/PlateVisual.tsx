@@ -116,8 +116,7 @@ export default function PlateVisual({ plates, unit, barWeight, totalWeight }: Pl
 
     // ── Plates ────────────────────────────────────────────────────────────
     const getPlateCanvasH = (w: number): number => {
-      if (w >= 25 || w === 45) return PLATE_H;
-      if (w === 20) return Math.round(PLATE_H * 0.88);
+      if (w >= 20 || w === 45) return PLATE_H;
       if (w === 15 || w === 35) return Math.round(PLATE_H * 0.76);
       if (w === 10) return Math.round(PLATE_H * 0.65);
       if (w === 5) return Math.round(PLATE_H * 0.53);
