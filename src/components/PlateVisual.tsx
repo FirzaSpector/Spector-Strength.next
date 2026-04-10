@@ -16,10 +16,24 @@ export default function PlateVisual({ plates, unit, barWeight, totalWeight }: Pl
 
   const getPlateHeight = (weight: number) => {
     if (weight === 25 || weight === 20 || weight === 45) return 100;
+    if (weight === 35) return 88;
     if (weight === 15) return 80;
     if (weight === 10) return 68;
-    if (weight === 35) return 88;
-    return Math.max(36, 40 + weight * 2);
+    if (weight === 5) return 56;
+    if (weight === 2.5) return 42;
+    if (weight === 1.25) return 38;
+    if (weight === 1) return 34;
+    if (weight === 0.75) return 30;
+    if (weight === 0.5) return 27;
+    if (weight === 0.25) return 24;
+    return Math.max(24, 40 + weight * 2);
+  };
+
+  // Width tiers: full (25/20kg) → medium (15/10/5/2.5kg) → micro (≤1.25kg)
+  const getPlateWidth = (weight: number): number => {
+    if (weight <= 1.25) return 7;
+    if (weight === 2.5 || weight === 5 || weight === 10 || weight === 15) return 12;
+    return 15;
   };
 
   // ── PNG Export ────────────────────────────────────────────────────────────
@@ -35,7 +49,6 @@ export default function PlateVisual({ plates, unit, barWeight, totalWeight }: Pl
     const SCALE = 3; // hi-dpi
 
     // ── Layout ────────────────────────────────────────────────────────────
-    const PLATE_W = 33;        // width of each plate column
     const PLATE_GAP = 3;       // gap between plates
     const PLATE_H = 400;       // height of tallest plate (25kg)
     const SLEEVE_W = 60;       // collar width
@@ -47,8 +60,15 @@ export default function PlateVisual({ plates, unit, barWeight, totalWeight }: Pl
     const LEFT_PAD = 40;       // left margin
     const RIGHT_PAD = 24;
 
+    // Width tiers: full (25/20kg) → medium (15/10/5/2.5kg) → micro (≤1.25kg)
+    const getPlateCanvasW = (w: number): number => {
+      if (w <= 1.25) return 16;
+      if (w === 2.5 || w === 5 || w === 10 || w === 15) return 26;
+      return 33;
+    };
+
     const numPlates = flatPlates.length;
-    const platesW = numPlates * PLATE_W + Math.max(0, numPlates - 1) * PLATE_GAP;
+    const platesW = flatPlates.reduce((sum, p) => sum + getPlateCanvasW(p.weight), 0) + Math.max(0, numPlates - 1) * PLATE_GAP;
     const canvasW = LEFT_PAD + SLEEVE_W + PLATE_GAP + platesW + PLATE_GAP + BAR_EXTEND + RIGHT_PAD;
     const canvasH = TOP_PAD + PLATE_H + BOTTOM_H;
     const barMidY = TOP_PAD + PLATE_H / 2; // vertical centre of everything
@@ -117,57 +137,78 @@ export default function PlateVisual({ plates, unit, barWeight, totalWeight }: Pl
     // ── Plates ────────────────────────────────────────────────────────────
     const getPlateCanvasH = (w: number): number => {
       if (w >= 20 || w === 45) return PLATE_H;
-      if (w === 15 || w === 35) return Math.round(PLATE_H * 0.76);
+      if (w === 35) return Math.round(PLATE_H * 0.88);
+      if (w === 15) return Math.round(PLATE_H * 0.76);
       if (w === 10) return Math.round(PLATE_H * 0.65);
       if (w === 5) return Math.round(PLATE_H * 0.53);
       if (w === 2.5) return Math.round(PLATE_H * 0.44);
-      return Math.round(PLATE_H * 0.36);
+      if (w === 1.25) return Math.round(PLATE_H * 0.36);
+      if (w === 1) return Math.round(PLATE_H * 0.30);
+      if (w === 0.75) return Math.round(PLATE_H * 0.26);
+      if (w === 0.5) return Math.round(PLATE_H * 0.22);
+      if (w === 0.25) return Math.round(PLATE_H * 0.18);
+      return Math.round(PLATE_H * 0.18);
     };
 
     flatPlates.forEach((p, idx) => {
       const ph = getPlateCanvasH(p.weight);
+      const pw = getPlateCanvasW(p.weight);
+      const isMicro = p.weight <= 1.25;
       const py = barMidY - ph / 2;
       const tc = p.textColor || '#fff';
 
       // Plate fill
       ctx.fillStyle = p.color;
-      rrect(curX, py, PLATE_W, ph, 4);
+      rrect(curX, py, pw, ph, 3);
       ctx.fill();
 
       // Black border
       ctx.strokeStyle = '#000';
-      ctx.lineWidth = 2.5;
-      rrect(curX, py, PLATE_W, ph, 4);
+      ctx.lineWidth = isMicro ? 1.5 : 2.5;
+      rrect(curX, py, pw, ph, 3);
       ctx.stroke();
 
-      const cx = curX + PLATE_W / 2;
+      const cx = curX + pw / 2;
 
-      // ① Order number at top
-      ctx.fillStyle = tc;
-      ctx.font = `bold 20px Arial, sans-serif`;
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'top';
-      ctx.fillText(String(idx + 1), cx, py + 10);
+      if (!isMicro) {
+        // ① Order number at top
+        ctx.fillStyle = tc;
+        ctx.font = `bold 20px Arial, sans-serif`;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'top';
+        ctx.fillText(String(idx + 1), cx, py + 10);
 
-      // ② Plate weight — rotated 90° in the centre
-      ctx.save();
-      ctx.translate(cx, barMidY);
-      ctx.rotate(-Math.PI / 2);
-      ctx.fillStyle = tc;
-      ctx.font = `bold 24px Arial, sans-serif`;
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
-      ctx.fillText(p.label, 0, 0);
-      ctx.restore();
+        // ② Plate weight — rotated 90° in the centre
+        ctx.save();
+        ctx.translate(cx, barMidY);
+        ctx.rotate(-Math.PI / 2);
+        ctx.fillStyle = tc;
+        ctx.font = `bold 24px Arial, sans-serif`;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(p.label, 0, 0);
+        ctx.restore();
 
-      // ③ Unit label at bottom
-      ctx.fillStyle = tc;
-      ctx.font = `bold 13px Arial, sans-serif`;
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'bottom';
-      ctx.fillText(unit.toUpperCase(), cx, py + ph - 8);
+        // ③ Unit label at bottom
+        ctx.fillStyle = tc;
+        ctx.font = `bold 13px Arial, sans-serif`;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'bottom';
+        ctx.fillText(unit.toUpperCase(), cx, py + ph - 8);
+      } else {
+        // Micro plate: just the weight label rotated, smaller font
+        ctx.save();
+        ctx.translate(cx, barMidY);
+        ctx.rotate(-Math.PI / 2);
+        ctx.fillStyle = tc;
+        ctx.font = `bold 13px Arial, sans-serif`;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(p.label, 0, 0);
+        ctx.restore();
+      }
 
-      curX += PLATE_W + PLATE_GAP;
+      curX += pw + PLATE_GAP;
     });
 
     // ── Extending bar ─────────────────────────────────────────────────────
@@ -199,13 +240,14 @@ export default function PlateVisual({ plates, unit, barWeight, totalWeight }: Pl
     // Draw large weight numbers
     let wx = LEFT_PAD;
 
-    // "250"
+    // "140.5"
+    const kgStr = parseFloat(totalKg.toFixed(2)).toString();
     ctx.fillStyle = '#fff';
     ctx.font = `900 52px "Arial Black", Arial, sans-serif`;
     ctx.textAlign = 'left';
     ctx.textBaseline = 'top';
-    ctx.fillText(String(Math.round(totalKg)), wx, textY);
-    wx += ctx.measureText(String(Math.round(totalKg))).width + 2;
+    ctx.fillText(kgStr, wx, textY);
+    wx += ctx.measureText(kgStr).width + 2;
 
     // "KG"
     ctx.fillStyle = '#d1d5db';
@@ -237,7 +279,7 @@ export default function PlateVisual({ plates, unit, barWeight, totalWeight }: Pl
 
     // ── Download ──────────────────────────────────────────────────────────
     const link = document.createElement('a');
-    link.download = `spector-${Math.round(totalKg)}${unit}.png`;
+    link.download = `spector-${parseFloat(totalKg.toFixed(2))}${unit}.png`;
     link.href = canvas.toDataURL('image/png');
     link.click();
   };
@@ -256,7 +298,7 @@ export default function PlateVisual({ plates, unit, barWeight, totalWeight }: Pl
                 animate={{ scaleY: 1, opacity: 1 }}
                 transition={{ delay: (isLeft ? (sidePlates.length - pIdx) : pIdx) * 0.1 }}
                 style={{
-                  width: 15,
+                  width: getPlateWidth(plate.weight),
                   height: getPlateHeight(plate.weight),
                   background: plate.color,
                   color: plate.textColor,
