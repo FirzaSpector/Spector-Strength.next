@@ -45,7 +45,7 @@ function LocalCalculator() {
   const warmupSets = results?.[warmupLift] ? generateWarmupRamp(results[warmupLift].opener, unit) : null;
 
   return (
-    <div style={{ display: 'grid', gridTemplateColumns: 'minmax(280px,380px) 1fr', gap: '1.5rem', alignItems: 'start' }}>
+    <div className="mp-calc-grid">
       <div className="card-glow">
         <div className="card-inner">
           <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 22, letterSpacing: '0.06em', marginBottom: '1.5rem', color: 'var(--text-2)' }}>COMPETITION MAXES</h2>
@@ -188,7 +188,7 @@ function AttemptGrid({ meetId }: { meetId: string }) {
   const byLift = (lt: string) => attempts.filter(a => a.lift_type === lt).sort((a, b) => a.attempt_number - b.attempt_number);
 
   return (
-    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginTop: '1rem' }}>
+    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginTop: '1rem' }} className="attempt-grid">
       {/* Attempt form */}
       <div className="card-glow" style={{ gridColumn: '1 / -1' }}>
         <div className="card-inner" style={{ padding: '1.5rem' }}>
@@ -261,27 +261,51 @@ function AttemptGrid({ meetId }: { meetId: string }) {
       {loading ? (
         <div style={{ gridColumn: '1 / -1', padding: '1rem', fontFamily: 'var(--font-mono)', fontSize: 12, color: 'var(--text-3)' }}>Loading attempts…</div>
       ) : (
-        <div style={{ gridColumn: '1 / -1', overflowX: 'auto' }}>
-          <table className="ss-table">
-            <thead>
-              <tr><th>Lift</th><th>Attempt</th><th>Weight</th><th style={{ textAlign: 'right' }}>Status</th></tr>
-            </thead>
-            <tbody>
-              {(['squat', 'bench', 'deadlift'] as LiftType[]).flatMap(lt =>
-                byLift(lt).map(a => (
-                  <tr key={a.id}>
-                    <td style={{ textTransform: 'uppercase', fontWeight: 700, fontSize: 11, letterSpacing: '0.08em', color: lt === 'squat' ? 'var(--red)' : lt === 'bench' ? 'var(--teal)' : '#ffab00' }}>{lt}</td>
-                    <td style={{ color: 'var(--text-3)' }}>Attempt {a.attempt_number}</td>
-                    <td>{a.weight} kg</td>
-                    <td style={{ textAlign: 'right', color: STATUS_COLORS[a.status] ?? 'var(--text-2)', fontWeight: 600, fontFamily: 'var(--font-mono)', fontSize: 12 }}>{STATUS_LABELS[a.status] ?? a.status}</td>
-                  </tr>
-                ))
-              )}
-              {attempts.length === 0 && (
-                <tr><td colSpan={4} style={{ color: 'var(--text-3)', textAlign: 'center', padding: '1rem' }}>No attempts logged yet.</td></tr>
-              )}
-            </tbody>
-          </table>
+        <div style={{ gridColumn: '1 / -1' }}>
+          {/* Desktop table */}
+          <div className="attempt-table-wrap">
+            <table className="ss-table">
+              <thead>
+                <tr><th>Lift</th><th>Attempt</th><th>Weight</th><th style={{ textAlign: 'right' }}>Status</th></tr>
+              </thead>
+              <tbody>
+                {(['squat', 'bench', 'deadlift'] as LiftType[]).flatMap(lt =>
+                  byLift(lt).map(a => (
+                    <tr key={a.id}>
+                      <td style={{ textTransform: 'uppercase', fontWeight: 700, fontSize: 11, letterSpacing: '0.08em', color: lt === 'squat' ? 'var(--red)' : lt === 'bench' ? 'var(--teal)' : '#ffab00' }}>{lt}</td>
+                      <td style={{ color: 'var(--text-3)' }}>Attempt {a.attempt_number}</td>
+                      <td>{a.weight} kg</td>
+                      <td style={{ textAlign: 'right', color: STATUS_COLORS[a.status] ?? 'var(--text-2)', fontWeight: 600, fontFamily: 'var(--font-mono)', fontSize: 12 }}>{STATUS_LABELS[a.status] ?? a.status}</td>
+                    </tr>
+                  ))
+                )}
+                {attempts.length === 0 && (
+                  <tr><td colSpan={4} style={{ color: 'var(--text-3)', textAlign: 'center', padding: '1rem' }}>No attempts logged yet.</td></tr>
+                )}
+              </tbody>
+            </table>
+          </div>
+          {/* Mobile attempt cards */}
+          <div className="attempt-cards">
+            {attempts.length === 0 ? (
+              <p style={{ fontFamily: 'var(--font-mono)', fontSize: 12, color: 'var(--text-3)', padding: '0.5rem 0' }}>No attempts logged yet.</p>
+            ) : (
+              (['squat', 'bench', 'deadlift'] as LiftType[]).flatMap(lt =>
+                byLift(lt).map(a => {
+                  const color = lt === 'squat' ? 'var(--red)' : lt === 'bench' ? 'var(--teal)' : '#ffab00';
+                  return (
+                    <div key={a.id} className="attempt-card">
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
+                        <span style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: 13, letterSpacing: '0.08em', textTransform: 'uppercase', color }}>{lt} — Attempt {a.attempt_number}</span>
+                        <span style={{ fontFamily: 'var(--font-mono)', fontSize: 11, fontWeight: 600, color: STATUS_COLORS[a.status] ?? 'var(--text-2)' }}>{STATUS_LABELS[a.status] ?? a.status}</span>
+                      </div>
+                      <span style={{ fontFamily: 'var(--font-mono)', fontSize: 16, color: 'var(--text)' }}>{a.weight} kg</span>
+                    </div>
+                  );
+                })
+              )
+            )}
+          </div>
         </div>
       )}
     </div>
@@ -418,7 +442,7 @@ export default function MeetPlannerPage() {
                   </div>
                 </div>
               ) : (
-                <div style={{ display: 'grid', gridTemplateColumns: 'minmax(280px, 360px) 1fr', gap: '2rem', alignItems: 'start' }}>
+                <div className="mp-meets-grid">
                   {/* Create meet form */}
                   <div className="card-glow">
                     <div className="card-inner">
@@ -500,8 +524,63 @@ export default function MeetPlannerPage() {
 
       <style>{`
         @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* ── Attempt calculator: 2-col grid ── */
+        .mp-calc-grid {
+          display: grid;
+          grid-template-columns: minmax(280px, 380px) 1fr;
+          gap: 1.5rem;
+          align-items: start;
+        }
+
+        /* ── My Competitions: 2-col grid ── */
+        .mp-meets-grid {
+          display: grid;
+          grid-template-columns: minmax(280px, 360px) 1fr;
+          gap: 2rem;
+          align-items: start;
+        }
+
+        /* ── AttemptGrid inner grid ── */
+        .attempt-grid {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 1rem;
+          margin-top: 1rem;
+        }
+
+        /* ── Desktop: show table, hide cards ── */
+        .attempt-table-wrap { overflow-x: auto; }
+        .attempt-cards { display: none; }
+
+        /* ── Mobile ── */
         @media (max-width: 767px) {
-          main > div { grid-template-columns: 1fr !important; }
+          .mp-calc-grid,
+          .mp-meets-grid,
+          .attempt-grid {
+            grid-template-columns: 1fr;
+            gap: 1rem;
+          }
+
+          /* Attempt log form: stack toggles vertically */
+          .attempt-grid > .card-glow [style*="flex-wrap: wrap"] {
+            flex-direction: column;
+          }
+
+          /* Switch table → card list */
+          .attempt-table-wrap { display: none; }
+          .attempt-cards {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+          }
+          .attempt-card {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 0.75rem 1rem;
+          }
         }
       `}</style>
     </main>

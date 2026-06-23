@@ -107,7 +107,7 @@ export default function OneRMPage() {
       </div>
 
       {/* ── Calculator section ── */}
-      <div style={{ maxWidth: 1100, margin: '0 auto', padding: '2rem clamp(1rem, 5vw, 2rem) 2rem', display: 'grid', gridTemplateColumns: 'minmax(280px,380px) 1fr', gap: '1.5rem', alignItems: 'start' }}>
+      <div className="orm-calc-grid">
         {/* Inputs */}
         <div className="card-glow">
           <div className="card-inner">
@@ -232,7 +232,7 @@ export default function OneRMPage() {
             </div>
           </motion.div>
         ) : (
-          <div style={{ display: 'grid', gridTemplateColumns: 'minmax(280px, 380px) 1fr', gap: '1.5rem', alignItems: 'start' }}>
+          <div className="orm-log-grid">
             {/* Log form */}
             <div className="card-glow">
               <div className="card-inner">
@@ -328,32 +328,55 @@ export default function OneRMPage() {
                 ) : liftHistory.length === 0 ? (
                   <p style={{ fontFamily: 'var(--font-mono)', fontSize: 13, color: 'var(--text-3)', padding: '1rem 0' }}>No lifts logged yet. Record your first set!</p>
                 ) : (
-                  <div style={{ overflowX: 'auto' }}>
-                    <table className="ss-table">
-                      <thead>
-                        <tr>
-                          <th>Date</th>
-                          <th>Lift</th>
-                          <th>Weight</th>
-                          <th>Reps</th>
-                          <th>RPE</th>
-                          <th style={{ textAlign: 'right', color: 'var(--teal)' }}>e1RM</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {liftHistory.map(lift => (
-                          <motion.tr key={lift.id} initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-                            <td style={{ color: 'var(--text-3)', whiteSpace: 'nowrap' }}>{formatDate(lift.created_at)}</td>
-                            <td style={{ color: liftColorMap[lift.lift_type] ?? 'var(--text-2)', fontWeight: 700, textTransform: 'uppercase', fontSize: 11, letterSpacing: '0.08em' }}>{lift.lift_type}</td>
-                            <td>{lift.weight} kg</td>
-                            <td>{lift.reps}</td>
-                            <td style={{ color: 'var(--text-3)' }}>{lift.rpe != null ? lift.rpe : '—'}</td>
-                            <td style={{ textAlign: 'right', color: 'var(--teal)', fontWeight: 700, fontFamily: 'var(--font-mono)' }}>{formatNum(lift.e1rm, 1)} kg</td>
-                          </motion.tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
+                  <>
+                    {/* Desktop table */}
+                    <div className="orm-history-table-wrap">
+                      <table className="ss-table">
+                        <thead>
+                          <tr>
+                            <th>Date</th><th>Lift</th><th>Weight</th><th>Reps</th><th>RPE</th>
+                            <th style={{ textAlign: 'right', color: 'var(--teal)' }}>e1RM</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {liftHistory.map(lift => (
+                            <motion.tr key={lift.id} initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+                              <td style={{ color: 'var(--text-3)', whiteSpace: 'nowrap' }}>{formatDate(lift.created_at)}</td>
+                              <td style={{ color: liftColorMap[lift.lift_type] ?? 'var(--text-2)', fontWeight: 700, textTransform: 'uppercase', fontSize: 11, letterSpacing: '0.08em' }}>{lift.lift_type}</td>
+                              <td>{lift.weight} kg</td>
+                              <td>{lift.reps}</td>
+                              <td style={{ color: 'var(--text-3)' }}>{lift.rpe != null ? lift.rpe : '—'}</td>
+                              <td style={{ textAlign: 'right', color: 'var(--teal)', fontWeight: 700, fontFamily: 'var(--font-mono)' }}>{formatNum(lift.e1rm, 1)} kg</td>
+                            </motion.tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                    {/* Mobile card list */}
+                    <div className="orm-lift-cards">
+                      {liftHistory.map(lift => (
+                        <motion.div key={lift.id} className="orm-lift-card" initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }}>
+                          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.4rem' }}>
+                            <span style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: 13, letterSpacing: '0.08em', textTransform: 'uppercase', color: liftColorMap[lift.lift_type] ?? 'var(--text-2)' }}>{lift.lift_type}</span>
+                            <span style={{ fontFamily: 'var(--font-mono)', fontSize: 11, color: 'var(--text-3)' }}>{formatDate(lift.created_at)}</span>
+                          </div>
+                          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.3rem 0.75rem' }}>
+                            {[
+                              { label: 'Weight', value: `${lift.weight} kg` },
+                              { label: 'Reps', value: String(lift.reps) },
+                              { label: 'RPE', value: lift.rpe != null ? String(lift.rpe) : '—' },
+                              { label: 'e1RM', value: `${formatNum(lift.e1rm, 1)} kg`, highlight: true },
+                            ].map(({ label, value, highlight }) => (
+                              <div key={label}>
+                                <div style={{ fontFamily: 'var(--font-mono)', fontSize: 9, letterSpacing: '0.15em', textTransform: 'uppercase', color: 'var(--text-3)' }}>{label}</div>
+                                <div style={{ fontFamily: 'var(--font-mono)', fontSize: 14, color: highlight ? 'var(--teal)' : 'var(--text)', fontWeight: highlight ? 700 : 400 }}>{value}</div>
+                              </div>
+                            ))}
+                          </div>
+                        </motion.div>
+                      ))}
+                    </div>
+                  </>
                 )}
               </div>
             </div>
@@ -363,9 +386,51 @@ export default function OneRMPage() {
 
       <style>{`
         @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* ── Calculator 2-col grid ── */
+        .orm-calc-grid {
+          max-width: 1100px;
+          margin: 0 auto;
+          padding: 2rem clamp(1rem, 5vw, 2rem) 2rem;
+          display: grid;
+          grid-template-columns: minmax(280px, 380px) 1fr;
+          gap: 1.5rem;
+          align-items: start;
+        }
+
+        /* ── Log-a-lift 2-col grid ── */
+        .orm-log-grid {
+          display: grid;
+          grid-template-columns: minmax(280px, 380px) 1fr;
+          gap: 1.5rem;
+          align-items: start;
+        }
+
+        /* ── History: desktop table, hidden cards ── */
+        .orm-history-table-wrap { overflow-x: auto; }
+        .orm-lift-cards { display: none; }
+
+        /* ── Mobile ── */
         @media (max-width: 767px) {
-          main > div:nth-child(2) { grid-template-columns: 1fr !important; }
-          main > div:nth-child(3) > div:nth-child(2) { grid-template-columns: 1fr !important; }
+          .orm-calc-grid,
+          .orm-log-grid {
+            grid-template-columns: 1fr;
+            gap: 1rem;
+          }
+
+          /* Hide table, show cards */
+          .orm-history-table-wrap { display: none; }
+          .orm-lift-cards {
+            display: flex;
+            flex-direction: column;
+            gap: 0.65rem;
+          }
+          .orm-lift-card {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 0.85rem 1rem;
+          }
         }
       `}</style>
     </main>
