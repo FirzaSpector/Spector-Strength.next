@@ -88,7 +88,7 @@ export default function LiftsPage() {
       {/* PR summary bar */}
       {Object.keys(prs).length > 0 && (
         <div style={{ background: 'var(--surface)', borderBottom: '1px solid var(--border)', padding: '1.25rem clamp(1.25rem, 5vw, 2.5rem)' }}>
-          <div style={{ maxWidth: 1100, margin: '0 auto', display: 'flex', gap: '2rem', flexWrap: 'wrap' }}>
+          <div className="pr-bar-inner">
             {LIFT_TYPES.filter(lt => prs[lt]).map(lt => (
               <div key={lt}>
                 <div style={{ fontFamily: 'var(--font-mono)', fontSize: 9.5, letterSpacing: '0.22em', textTransform: 'uppercase', color: 'var(--text-3)', marginBottom: 3 }}>Best {lt} e1RM</div>
@@ -99,7 +99,7 @@ export default function LiftsPage() {
         </div>
       )}
 
-      <div style={{ maxWidth: 1100, margin: '0 auto', padding: '2rem clamp(1rem, 5vw, 2rem) 5rem', display: 'grid', gridTemplateColumns: 'minmax(280px, 380px) 1fr', gap: '1.5rem', alignItems: 'start' }}>
+      <div className="lifts-grid">
 
         {/* Log form */}
         <div className="card-glow">
@@ -204,32 +204,67 @@ export default function LiftsPage() {
                 {history.length === 0 ? 'No lifts logged yet. Record your first set!' : `No ${filter} lifts found.`}
               </p>
             ) : (
-              <div style={{ overflowX: 'auto' }}>
-                <table className="ss-table">
-                  <thead>
-                    <tr>
-                      <th>Date</th>
-                      <th>Lift</th>
-                      <th>Weight</th>
-                      <th>Reps</th>
-                      <th>RPE</th>
-                      <th style={{ textAlign: 'right', color: 'var(--teal)' }}>e1RM</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {filtered.map(lift => (
-                      <motion.tr key={lift.id} initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-                        <td style={{ color: 'var(--text-3)', whiteSpace: 'nowrap' }}>{formatDate(lift.created_at)}</td>
-                        <td style={{ color: LIFT_COLOR[lift.lift_type] ?? 'var(--text-2)', fontWeight: 700, textTransform: 'uppercase', fontSize: 11, letterSpacing: '0.08em' }}>{lift.lift_type}</td>
-                        <td>{lift.weight} kg</td>
-                        <td>{lift.reps}</td>
-                        <td style={{ color: 'var(--text-3)' }}>{lift.rpe != null ? lift.rpe : '—'}</td>
-                        <td style={{ textAlign: 'right', color: 'var(--teal)', fontWeight: 700, fontFamily: 'var(--font-mono)' }}>{formatNum(lift.e1rm, 1)} kg</td>
-                      </motion.tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
+              <>
+                {/* Desktop table */}
+                <div className="history-table-wrap">
+                  <table className="ss-table">
+                    <thead>
+                      <tr>
+                        <th>Date</th>
+                        <th>Lift</th>
+                        <th>Weight</th>
+                        <th>Reps</th>
+                        <th>RPE</th>
+                        <th style={{ textAlign: 'right', color: 'var(--teal)' }}>e1RM</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {filtered.map(lift => (
+                        <motion.tr key={lift.id} initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+                          <td style={{ color: 'var(--text-3)', whiteSpace: 'nowrap' }}>{formatDate(lift.created_at)}</td>
+                          <td style={{ color: LIFT_COLOR[lift.lift_type] ?? 'var(--text-2)', fontWeight: 700, textTransform: 'uppercase', fontSize: 11, letterSpacing: '0.08em' }}>{lift.lift_type}</td>
+                          <td>{lift.weight} kg</td>
+                          <td>{lift.reps}</td>
+                          <td style={{ color: 'var(--text-3)' }}>{lift.rpe != null ? lift.rpe : '—'}</td>
+                          <td style={{ textAlign: 'right', color: 'var(--teal)', fontWeight: 700, fontFamily: 'var(--font-mono)' }}>{formatNum(lift.e1rm, 1)} kg</td>
+                        </motion.tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+
+                {/* Mobile card list */}
+                <div className="lift-cards">
+                  {filtered.map(lift => (
+                    <motion.div key={lift.id} className="lift-card" initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }}>
+                      <div className="lift-card-header">
+                        <span style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: 13, letterSpacing: '0.08em', textTransform: 'uppercase', color: LIFT_COLOR[lift.lift_type] ?? 'var(--text-2)' }}>
+                          {lift.lift_type}
+                        </span>
+                        <span style={{ fontFamily: 'var(--font-mono)', fontSize: 11, color: 'var(--text-3)' }}>
+                          {formatDate(lift.created_at)}
+                        </span>
+                      </div>
+                      <div className="lift-card-stat">
+                        <span className="lift-card-label">Weight</span>
+                        <span className="lift-card-value">{lift.weight} kg</span>
+                      </div>
+                      <div className="lift-card-stat">
+                        <span className="lift-card-label">Reps</span>
+                        <span className="lift-card-value">{lift.reps}</span>
+                      </div>
+                      <div className="lift-card-stat">
+                        <span className="lift-card-label">RPE</span>
+                        <span className="lift-card-value">{lift.rpe != null ? lift.rpe : '—'}</span>
+                      </div>
+                      <div className="lift-card-stat">
+                        <span className="lift-card-label">e1RM</span>
+                        <span className="lift-card-value" style={{ color: 'var(--teal)', fontWeight: 700 }}>{formatNum(lift.e1rm, 1)} kg</span>
+                      </div>
+                    </motion.div>
+                  ))}
+                </div>
+              </>
             )}
           </div>
         </div>
@@ -237,7 +272,83 @@ export default function LiftsPage() {
 
       <style>{`
         @keyframes spin { to { transform: rotate(360deg); } }
-        @media (max-width: 767px) { main > div:nth-child(3) { grid-template-columns: 1fr !important; } }
+
+        /* ── Layout grid ── */
+        .lifts-grid {
+          max-width: 1100px;
+          margin: 0 auto;
+          padding: 2rem clamp(1rem, 5vw, 2rem) 5rem;
+          display: grid;
+          grid-template-columns: minmax(280px, 380px) 1fr;
+          gap: 1.5rem;
+          align-items: start;
+        }
+
+        /* ── PR bar ── */
+        .pr-bar-inner {
+          max-width: 1100px;
+          margin: 0 auto;
+          display: flex;
+          gap: 2rem;
+          flex-wrap: wrap;
+        }
+
+        /* ── History table: desktop ── */
+        .history-table-wrap {
+          overflow-x: auto;
+        }
+        .lift-cards { display: none; }
+
+        /* ── Mobile ── */
+        @media (max-width: 767px) {
+          .lifts-grid {
+            grid-template-columns: 1fr;
+            padding-top: 1.25rem;
+            gap: 1rem;
+          }
+
+          /* Show card list, hide table */
+          .history-table-wrap { display: none; }
+          .lift-cards {
+            display: flex;
+            flex-direction: column;
+            gap: 0.65rem;
+            margin-top: 0.25rem;
+          }
+          .lift-card {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.35rem 0.75rem;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 0.85rem 1rem;
+          }
+          .lift-card-header {
+            grid-column: 1 / -1;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 0.35rem;
+          }
+          .lift-card-stat {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+          }
+          .lift-card-label {
+            font-family: var(--font-mono);
+            font-size: 9px;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--text-3);
+          }
+          .lift-card-value {
+            font-family: var(--font-mono);
+            font-size: 14px;
+            color: var(--text);
+          }
+        }
       `}</style>
     </main>
   );
