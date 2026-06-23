@@ -4,6 +4,7 @@ from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 from pwdlib import PasswordHash
+from pwdlib.hashers.bcrypt import BcryptHasher
 import jwt
 from datetime import datetime, timedelta, timezone
 from uuid import UUID
@@ -17,7 +18,7 @@ import schemas
 load_dotenv()
 
 models.Base.metadata.create_all(bind=engine)
-password_hash = PasswordHash.recommended()
+password_hash = PasswordHash((BcryptHasher(),))
 
 # MEMBACA DARI .ENV (Jika file .env hilang, ada fallback string aman)
 SECRET_KEY = os.getenv("SECRET_KEY", "TEMPORARY_FALLBACK_KEY_DO_NOT_USE_IN_PROD")
